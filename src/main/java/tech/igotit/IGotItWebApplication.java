@@ -1,9 +1,9 @@
-package igotit.tech;
+package tech.igotit;
 
 import org.orienteer.core.OrienteerWebApplication;
 import org.orienteer.core.module.PerspectivesModule;
 
-public class MyWebApplication extends OrienteerWebApplication
+public class IGotItWebApplication extends OrienteerWebApplication
 {
 	@Override
 	public void init()

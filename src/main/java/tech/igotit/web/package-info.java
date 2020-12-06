@@ -1,4 +1,4 @@
 /**
  * Package for a project web pages
  */
-package igotit.tech.web;
+package tech.igotit.web;

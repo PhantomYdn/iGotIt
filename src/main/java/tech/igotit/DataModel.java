@@ -1,4 +1,4 @@
-package igotit.tech;
+package tech.igotit;
 
 import org.orienteer.core.OrienteerWebApplication;
 import org.orienteer.core.module.AbstractOrienteerModule;
@@ -11,7 +11,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 public class DataModel extends AbstractOrienteerModule{
 
 	protected DataModel() {
-		super("app", 1);
+		super("iGotIt", 1);
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package igotit.tech;
+package tech.igotit;
 
 import org.orienteer.junit.OrienteerTestRunner;
 
@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import tech.igotit.IGotItWebApplication;
+
 
 @RunWith(OrienteerTestRunner.class)
 @Singleton
@@ -22,6 +24,6 @@ public class TestMyWebApplication
 	@Test
 	public void testWebApplicationClass()
 	{
-	    assertTrue(tester.getApplication() instanceof MyWebApplication);
+	    assertTrue(tester.getApplication() instanceof IGotItWebApplication);
 	}
 }
