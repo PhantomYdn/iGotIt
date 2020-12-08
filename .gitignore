@@ -24,3 +24,5 @@ databases/
 *.tar.gz
 /libs/
 *.zip
+orienteer.properties
+orienteer-test.properties
