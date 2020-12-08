@@ -58,6 +58,11 @@
             <artifactId>orienteer-devutils</artifactId>
             <version>${orienteer.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.amadeus</groupId>
+			<artifactId>amadeus-java</artifactId>
+			<version>5.6.0</version>
+		</dependency>
         <dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
