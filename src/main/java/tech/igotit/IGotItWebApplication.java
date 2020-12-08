@@ -2,6 +2,9 @@ package tech.igotit;
 
 import org.orienteer.core.OrienteerWebApplication;
 import org.orienteer.core.module.PerspectivesModule;
+import org.orienteer.jnpm.JNPMService;
+import org.orienteer.jnpm.JNPMSettings;
+import org.orienteer.jnpm.cdn.CDNWicketResource;
 
 public class IGotItWebApplication extends OrienteerWebApplication
 {
@@ -12,6 +15,9 @@ public class IGotItWebApplication extends OrienteerWebApplication
 		mountPackage("tech.igotit.web");
 		registerWidgets("tech.igotit.widget");
 		registerModule(DataModel.class);
+		if(!JNPMService.isConfigured()) 
+			   JNPMService.configure(JNPMSettings.builder().build());
+	    CDNWicketResource.mount(this, "/cdn");
 	}
 	
 }
