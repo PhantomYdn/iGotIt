@@ -9,7 +9,8 @@ public class IGotItWebApplication extends OrienteerWebApplication
 	public void init()
 	{
 		super.init();
-		mountPackage("igotit.tech.web");
+		mountPackage("tech.igotit.web");
+		registerWidgets("tech.igotit.widget");
 		registerModule(DataModel.class);
 	}
 	
