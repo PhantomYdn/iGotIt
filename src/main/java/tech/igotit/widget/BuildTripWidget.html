@@ -1,3 +1,16 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-    {{ text }}
+    {{ cityCode }}
+<div>
+	<input v-model="cityCode"><button>Search</button>
+<div style="height: 500px; width: 100%">
+<l-map  :zoom="4"
+        :center="center"
+        :options="mapOptions">
+  <l-tile-layer
+        :url="url"
+        :attribution="attribution"
+      ></l-tile-layer>
+</l-map>
+</div>
+</div>
 </wicket:extend>
