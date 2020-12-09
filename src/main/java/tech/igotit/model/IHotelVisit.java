@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.util.string.Strings;
+import org.orienteer.core.component.visualizer.UIVisualizersRegistry;
+import org.orienteer.core.dao.DAO;
 import org.orienteer.core.dao.DAOField;
 import org.orienteer.core.dao.DAOOClass;
 import org.orienteer.core.dao.ODocumentWrapperProvider;
@@ -13,10 +15,14 @@ import com.amadeus.resources.HotelOffer.AddressType;
 import com.amadeus.resources.HotelOffer.Hotel;
 import com.amadeus.resources.HotelOffer.HotelContact;
 import com.amadeus.resources.HotelOffer.Offer;
+import com.amadeus.resources.HotelOffer.RoomDetails;
 import com.google.inject.ProvidedBy;
 
 @ProvidedBy(ODocumentWrapperProvider.class)
-@DAOOClass(value = "HotelVisit", displayable = {"name", "rating", "address", "city", "state", "phone", "fax"})
+@DAOOClass(value = "HotelVisit", 
+		   nameProperty = "name",
+		   parentProperty = "trip",
+		   displayable = {"name", "rating", "address", "city", "state", "phone", "fax"})
 public interface IHotelVisit {
 
 	public String getName();
@@ -64,6 +70,44 @@ public interface IHotelVisit {
 	public List<String> getAmenities();
 	public void setAmenities(List<String> value);
 	
+	@DAOField(inverse = "hotel", visualization = UIVisualizersRegistry.VISUALIZER_TABLE)
+	public List<IRoom> getRooms();
+	public void setRooms(List<IRoom> value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getShops();
+	public void setShops(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getRestaurants();
+	public void setRestaurants(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getTerritory();
+	public void setTerritory(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getSwimmingPools();
+	public void setSwimmingPools(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getWaterSlides();
+	public void setWaterSlides(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getCafes();
+	public void setCafes(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getKidsClub();
+	public void setKidsClub(String value);
+	
+	@DAOField(visualization = UIVisualizersRegistry.VISUALIZER_TEXTAREA, tab = "questionnaire")
+	public String getSummary();
+	public void setSummary(String value);
+	
+	
+	
 	public default void populateFrom(HotelOffer hotelOffer) {
 		Hotel hotel = hotelOffer.getHotel();
 		setName(hotel.getName());
@@ -89,5 +133,13 @@ public interface IHotelVisit {
 		setAmenities(Arrays.asList(amenities));
 		
 		Offer[] offers = hotelOffer.getOffers();
+		if(offers!=null) {
+			for (Offer offer : offers) {
+				RoomDetails roomDetails = offer.getRoom();
+				IRoom room = DAO.create(IRoom.class);
+				room.propogateFrom(roomDetails);
+				room.setHotel(this);
+			}
+		}
 	}
 }

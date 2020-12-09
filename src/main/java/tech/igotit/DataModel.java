@@ -17,7 +17,7 @@ import com.orientechnologies.orient.core.metadata.schema.OType;
 public class DataModel extends AbstractOrienteerModule{
 
 	protected DataModel() {
-		super("iGotIt", 4);
+		super("iGotIt", 6);
 	}
 	
 	@Override

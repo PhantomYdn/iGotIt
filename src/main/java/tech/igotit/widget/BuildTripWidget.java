@@ -1,6 +1,8 @@
 package tech.igotit.widget;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -24,6 +26,7 @@ import org.orienteer.vuecket.method.VueMethod;
 
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
+import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.HotelOffer;
 import com.amadeus.shopping.HotelOffersByHotel;
 import com.google.inject.Provider;
@@ -34,7 +37,7 @@ import tech.igotit.model.IGotItDAO;
 import tech.igotit.model.IHotelVisit;
 import tech.igotit.model.ITrip;
 
-@Widget(id="build-trip", domain="document", selector = "Trip", order=10, autoEnable=true)
+@Widget(id="build-trip", domain="document", selector = "Trip", order=10, autoEnable=true, tab = "parameters")
 @VueFile("BuildTripWidget.vue")
 @Slf4j
 public class BuildTripWidget extends AbstractWidget<ODocument> {
@@ -69,16 +72,30 @@ public class BuildTripWidget extends AbstractWidget<ODocument> {
 		log.info("HOTELS:"+hotelIds);
 		HotelOffersByHotel hotelOffersByHotel = amadeus.get().shopping.hotelOffersByHotel;
 		ITrip trip = DAO.provide(ITrip.class, getModelObject());
+		List<IHotelVisit> hotelsToAdd = new ArrayList<IHotelVisit>();
 		for (String hotelId : hotelIds) {
 			IHotelVisit hotel = dao.get().lookupByHotelId(trip, hotelId);
 			if(hotel==null) {
-				HotelOffer hotelOffer = hotelOffersByHotel.get(Params.with("hotelId", hotelId));
-				hotel = DAO.create(IHotelVisit.class);
-				hotel.populateFrom(hotelOffer);
-				hotel.setTrip(trip);
-				DAO.save(hotel);
+				//There is no opportunity to get info about hotel if it's not available: NPE in Amadeus code
+				try {
+					HotelOffer hotelOffer = hotelOffersByHotel.get(Params
+																	.with("hotelId", hotelId)
+																	.and("checkInDate", "2021-05-01")); 
+					hotel = DAO.create(IHotelVisit.class);
+					hotel.populateFrom(hotelOffer);
+					hotel.setTrip(trip);
+					DAO.save(hotel);
+					hotelsToAdd.add(hotel);
+				} catch (NullPointerException e) {
+					// NOP
+				}
 			}
 		}
+		Set<IHotelVisit> hotels = trip.getHotels();
+		hotels.addAll(hotelsToAdd);
+		trip.setHotels(hotels);
+		DAO.save(trip);
+		ctx.getTarget().appendJavaScript("alert('"+hotelsToAdd.size()+" new and available hotels were added to the trip');");
 	}
 	
 	@Override
