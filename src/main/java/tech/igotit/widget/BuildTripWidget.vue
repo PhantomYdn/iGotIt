@@ -38,6 +38,9 @@ module.exports = {
 		},
 		removeFromTrip : function(hotel) {
 			this.selectedHotels.splice(this.selectedHotels.indexOf(hotel),1);
+		},
+		proceed : function() {
+			this.vcInvoke("proceed", this.selectedHotels.map(h => h.hotel.hotelId));
 		}
 	}
 }

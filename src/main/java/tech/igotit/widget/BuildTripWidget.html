@@ -1,5 +1,4 @@
 <wicket:extend xmlns:wicket="http://www.w3.org/1999/xhtml">
-    {{ cityCode }}
 <div>
 	<input v-model="cityCode"><button @click="lookupHotels">Search</button>
 <div style="height: 500px; width: 100%">
@@ -36,10 +35,6 @@
       </l-marker>
 </l-map>
 </div>
-<table>
-<tr v-for="h in hotels">
-	<td>{{ h.hotel.name }}</td>
-</tr>
-</table>
+<button @click="proceed" v-if="selectedHotels.length > 0" class="btn btn-primary btn-block">Proceed with {{selectedHotels.length}} selected hotels</button>
 </div>
 </wicket:extend>

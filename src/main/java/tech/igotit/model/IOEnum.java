@@ -5,7 +5,11 @@ import java.util.Map;
 import org.orienteer.core.component.visualizer.UIVisualizersRegistry;
 import org.orienteer.core.dao.DAOField;
 import org.orienteer.core.dao.DAOOClass;
+import org.orienteer.core.dao.ODocumentWrapperProvider;
 
+import com.google.inject.ProvidedBy;
+
+@ProvidedBy(ODocumentWrapperProvider.class)
 @DAOOClass(value = "OEnum", isAbstract = true)
 public interface IOEnum {
 	
